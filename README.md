@@ -22,4 +22,5 @@ the tree.
 This package was derived from the two aforementioned models:
 
 https://github.com/tgvaughan/MultiTypeTree
+
 https://github.com/seidels/tidetree
