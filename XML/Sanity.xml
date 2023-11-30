@@ -1,0 +1,79 @@
+<beast version='2.0'
+       namespace='beast.core:beast.core.util:beast.evolution.operators:beast.evolution.likelihood:beast.core.parameter:beast.evolution.tree:beast.evolution.tree.coalescent'>
+
+    <model spec='beast.evolution.migrationmodel.MigrationModel' id="migmodel">
+        <rateMatrix spec='RealParameter' value="     0.01 0.02 0.03
+						0.04      0.05 0.06
+						0.07 0.08      0.09
+						0.10 0.11 0.12     " dimension="12"/>
+        <popSizes spec="RealParameter" value="7.0" dimension="4"/>
+    </model>
+
+    <run spec="MCMC" id="mcmc" chainLength="10000000"> 
+
+        <init spec='StructuredCoalescentMultiTypeTree'
+                      id="tree" 
+                      typeLabel="state" nTypes="4"
+		      leafTypes="0 1 2 3 0" migrationModel="@migmodel">
+        </init>
+      
+        <state>
+            <stateNode idref="tree"/>
+        </state>
+        
+        <distribution spec="CompoundDistribution" id="P">
+            <distribution id='scLikelihood' spec="StructuredCoalescentLikelihood">
+                <migrationModel idref="migmodel"/>
+                <multiTypeTree idref="tree"/>
+            </distribution>
+        </distribution>
+
+	<operator spec="NodeRetype" id="NR"
+		  weight="10" multiTypeTree="@tree"
+		  migrationModel="@migmodel"/>
+
+	<operator spec="NodeShiftRetype" id="NSR1"
+		  weight="10" multiTypeTree="@tree"
+		  rootScaleFactor="0.8"
+		  migrationModel="@migmodel" rootOnly="true"/>
+               
+	<operator spec="NodeShiftRetype" id="NSR2"
+		  weight="10" multiTypeTree="@tree"
+		  migrationModel="@migmodel" noRoot="true"/>
+	
+	<operator spec="MultiTypeTreeScale" id="MTTS"
+		  weight="10" multiTypeTree="@tree"
+		  scaleFactor="0.8" useOldTreeScaler="true"/>
+
+	<operator spec="TypedWilsonBalding" id="CWB"
+		  weight="10" multiTypeTree="@tree"
+		  migrationModel="@migmodel" alpha="0.2"/>
+
+	<operator spec='TypedSubtreeExchange' id='STX'
+		  weight="10" multiTypeTree="@tree"
+		  migrationModel="@migmodel"/>
+
+        <logger logEvery="100" fileName="Sanity.log">
+            <model idref='P'/>
+            <log idref="P"/>
+            <log spec="TreeHeightLogger" tree="@tree"/>
+            <log spec="TreeRootTypeLogger" multiTypeTree="@tree"/>
+            <log spec="TypeChangeCounts" multiTypeTree="@tree" id="typeChangeCounts"/>
+	    <log spec="Sum" arg="@typeChangeCounts" id="totalTypeChanges" />
+        </logger>
+
+        <logger logEvery="10000" fileName="Sanity.trees" mode="tree">
+            <log idref="tree"/>
+        </logger>
+
+        <logger logEvery="10000">
+            <model idref='P'/>
+            <log idref="P"/>
+            <log spec="TreeHeightLogger" tree="@tree"/>
+            <log spec="TreeRootTypeLogger" multiTypeTree="@tree"/>
+            <log idref="totalTypeChanges"/>
+        </logger>
+
+    </run>
+
+</beast>
