@@ -1,8 +1,8 @@
-<beast version='2.0' namespace='beast.base.evolution.alignment:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.pkgmgmt:beast.base.core:beast.base.inference.parameter:beast.base.evolution.tree:beast.base.evolution.tree.coalescent:beast.base.util:beast.base.math:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood:beast.evolution.migrationmodel:beast.base.inference.distribution:multitypetree.distributions:multitypetree.operators:multitypetree.util:multitypetree.evolution.datatype'>
+<beast version='2.0' namespace='beast.base.evolution.datatype:beast.base.evolution.alignment:beast.pkgmgmt:beast.base.core:beast.base.inference:beast.pkgmgmt:beast.base.core:beast.base.inference.parameter:beast.base.evolution.tree:beast.base.evolution.tree.coalescent:beast.base.util:beast.base.math:beast.base.evolution.operator:beast.base.inference.operator:beast.base.evolution.sitemodel:beast.base.evolution.substitutionmodel:beast.base.evolution.likelihood:beast.evolution.migrationmodel:beast.base.inference.distribution:multitypetree.distributions:multitypetree.operators:multitypetree.util:multitypetree.evolution.datatype'>
 
    <data  id="s1_c1_data.txt" spec="Alignment" name="alignment">
 	    <userDataType spec="EditData"
-		                     nrOfStates="3" />
+				                     nrOfStates="3" />
 		<sequence id="cell_1" spec="Sequence" taxon="1" value="1,2,0,1,1,0,1,2,1,0,"/>
 		<sequence id="cell_2" spec="Sequence" taxon="2" value="1,0,0,1,1,0,1,2,1,0,"/>
 		<sequence id="cell_3" spec="Sequence" taxon="3" value="1,0,0,1,1,0,1,2,1,0,"/>
@@ -33,8 +33,7 @@
  	   6=0,
  	   7=1,
  	   8=0,
- 	   9=1,
- 	   10=0">
+ 	   9=1">
   </typeTraitSet>
 
    <!-- multitypetree substitution model -->
@@ -108,7 +107,10 @@
          lower="0.0" name="stateNode" upper="1000"> 0.0
        </parameter>
 	   <parameter id="clockRate.c" spec="parameter.RealParameter" name="stateNode">1.0</parameter>
-	   
+	   <parameter id="origin" spec="parameter.RealParameter" name="stateNode" upper="54.0001">54.001</parameter>
+       <parameter spec="parameter.RealParameter" estimate="false" lower="0.0" id="proportionInvariant"
+           name="stateNode" upper="1.0">0.0</parameter>
+
      </state>
      
      <distribution spec='CompoundDistribution' id='posterior'>
@@ -136,10 +138,6 @@
      <operator spec="ScaleOperator" id="PopSizeScaler"
  	      parameter="@popSizes"
 	      scaleFactor="0.8" weight="1"/>
-
-     <operator spec="ScaleOperator" id="muRateScaler"
-	       parameter="@mutationRate"
-	       scaleFactor="0.8" weight="1"/>
 
 	 <operator id="editRateScaler" spec="DeltaExchangeOperator"
 	 	   parameter="@editRate" weight="3.0"/>

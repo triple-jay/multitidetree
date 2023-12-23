@@ -9,6 +9,9 @@
 
 
     <service type="beast.base.core.BEASTInterface">
+        <provider classname="multitypetree.evolution.datatype.EditData"/>
+        <provider classname="multitypetree.substitutionmodel.EditAndSilencingModel"/>
+        <provider classname="multitypetree.distributions.TreeLikelihoodWithEditWindow"/>
         <provider classname="multitypetree.distributions.ExcludablePrior"/>
         <provider classname="multitypetree.distributions.MRCATypePrior"/>
         <provider classname="multitypetree.distributions.PriorWithPole"/>
